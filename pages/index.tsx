@@ -28,18 +28,28 @@ const Home: NextPage = () => {
       // Initialise address search input
       map.addControl(new mapboxgl.NavigationControl())
       
-      // Add search input to map
-      // TODO: Position to top left
-      map.addControl(
-        new MapboxGeocoder({
+
+      // Return location that user searches for
+      // TODO: Make this return suburb, etc to hook up to data
+
+      // Initialise search input
+      const geocoder = new MapboxGeocoder({
           accessToken: mapboxgl.accessToken,
           mapboxgl: mapboxgl,
           // Limit search country to Australia
           countries: "au",
           // Limit search types to postcode / suburb
-          types: "postcode, locality",
+          types: "postcode",
       })
-      );
+
+      // Add geocoder to map
+      map.addControl(geocoder);
+
+      // Return postcode
+      // TODO: Pass postcode to internal API route that queries data and returns relevant data
+      geocoder.on('result', function(result) {
+        console.log(result.result.text);
+      });
     
   }, []);
 
