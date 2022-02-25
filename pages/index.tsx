@@ -3,12 +3,27 @@ import Head from "next/head";
 import Image from "next/image";
 import { useEffect } from "react";
 import styles from "../styles/Home.module.css";
+import useSWR from 'swr' // Handle data loading / error / successful states
+import fetcher from "../lib/fetcher";
+import { useState } from "react";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
+// TODO: Hide access token in environmental variable
 mapboxgl.accessToken = 'pk.eyJ1IjoidXNrb21wdWYiLCJhIjoiY2pnZzJvcHR4MDl0czJ4cW0zZTAxYnY5ZiJ9.EtWLN3Q74QDC6PpFDsvFig';
 
 const Home: NextPage = () => {
+
+  // When postcode is searched via the box or by clicking, toggle this to true and render data card
+  const [searchState, setSearchState] = useState(false);
+
+  // Initialise data fetching
+  const { data, error } = useSWR("/api/data", fetcher)
+
+  
+  useEffect(() => {
+    console.log("Postcode search triggered")
+  }, [searchState])
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -46,6 +61,7 @@ const Home: NextPage = () => {
       // Add geocoder to map
       map.addControl(geocoder);
 
+      // Console log current postcode
       map.on('mousemove', 'poa-2021-aust-gda2020-shp-78l7af', (e) => {
         if (e.features.length > 0) {
           let tempPostcode = e.features[0].properties.POA_CODE21;
@@ -53,20 +69,19 @@ const Home: NextPage = () => {
             console.log(tempPostcode);
           }
           currentPostcode = tempPostcode;
+          setSearchState(true);
         }
       });
-
+  
       map.on('mouseleave', 'poa-2021-aust-gda2020-shp-78l7af', () => {
         currentPostcode = null;
       });
 
-      // Return postcode
-      // TODO: Pass postcode to internal API route that queries data and returns relevant data
-    // Use 'useSWR' for data fetching and render
-    // as separate card
+      // When postcode is searched, return data in card
       geocoder.on('result', function(result) {
         console.log(map.getStyle().layers);
         console.log(result.result.text);
+        setSearchState(true);
       });
     
   }, []);
