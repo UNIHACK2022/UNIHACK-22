@@ -23,7 +23,8 @@ const Home: NextPage = () => {
       pitch: 30,
       // bearing: -17.6,
       container: 'mapbox',
-      });
+      });  
+      let currentPostcode = null;
 
       // Initialise address search input
       map.addControl(new mapboxgl.NavigationControl())
@@ -45,9 +46,26 @@ const Home: NextPage = () => {
       // Add geocoder to map
       map.addControl(geocoder);
 
+      map.on('mousemove', 'poa-2021-aust-gda2020-shp-78l7af', (e) => {
+        if (e.features.length > 0) {
+          let tempPostcode = e.features[0].properties.POA_CODE21;
+          if (currentPostcode == null || currentPostcode != tempPostcode) {
+            console.log(tempPostcode);
+          }
+          currentPostcode = tempPostcode;
+        }
+      });
+
+      map.on('mouseleave', 'poa-2021-aust-gda2020-shp-78l7af', () => {
+        currentPostcode = null;
+      });
+
       // Return postcode
       // TODO: Pass postcode to internal API route that queries data and returns relevant data
+    // Use 'useSWR' for data fetching and render
+    // as separate card
       geocoder.on('result', function(result) {
+        console.log(map.getStyle().layers);
         console.log(result.result.text);
       });
     

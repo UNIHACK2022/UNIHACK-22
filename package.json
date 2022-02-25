@@ -12,7 +12,9 @@
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "@mui/material": "^5.4.3",
+    "@types/mysql2": "github:types/mysql2",
     "mapbox-gl": "^2.7.0",
+    "mysql2": "^2.3.3",
     "next": "12.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2"
