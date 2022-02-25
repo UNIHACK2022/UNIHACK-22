@@ -12,71 +12,32 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     const map = new mapboxgl.Map({
+      // Map controls
+      // Use our data visualisation with postcode boundaries, etc.
       style: 'mapbox://styles/uskompuf/cl01t9qd2008m14p7zm4bgg9d',
+      // Center map to Sydney
       center: [151.209, -33.8688],
-      zoom: 15.5,
-      pitch: 60,
-      bearing: -17.6,
+      // Zoom out a bit
+      zoom: 12.5,
+      // Pitch map a bit for '3D' effect
+      pitch: 30,
+      // bearing: -17.6,
       container: 'mapbox',
-      antialias: true
       });
 
+      // Initialise address search input
       map.addControl(new mapboxgl.NavigationControl())
-       
-      map.on('load', () => {
-      // Insert the layer beneath any symbol layer.
-      const layers = map.getStyle().layers;
-      const labelLayerId = layers.find(
-      (layer) => layer.type === 'symbol' && layer.layout['text-field']
-      ).id;
-       
-      // The 'building' layer in the Mapbox Streets
-      // vector tileset contains building height data
-      // from OpenStreetMap.
-      map.addLayer(
-      {
-      'id': 'add-3d-buildings',
-      'source': 'composite',
-      'source-layer': 'building',
-      'filter': ['==', 'extrude', 'true'],
-      'type': 'fill-extrusion',
-      'minzoom': 15,
-      'paint': {
-      'fill-extrusion-color': '#aaa',
-       
-      // Use an 'interpolate' expression to
-      // add a smooth transition effect to
-      // the buildings as the user zooms in.
-      'fill-extrusion-height': [
-      'interpolate',
-      ['linear'],
-      ['zoom'],
-      15,
-      0,
-      15.05,
-      ['get', 'height']
-      ],
-      'fill-extrusion-base': [
-      'interpolate',
-      ['linear'],
-      ['zoom'],
-      15,
-      0,
-      15.05,
-      ['get', 'min_height']
-      ],
-      'fill-extrusion-opacity': 0.6
-      }
-      },
-      labelLayerId
-      );
-      });
-
-      // Add the control to the map.
+      
+      // Add search input to map
+      // TODO: Position to top left
       map.addControl(
-      new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      mapboxgl: mapboxgl
+        new MapboxGeocoder({
+          accessToken: mapboxgl.accessToken,
+          mapboxgl: mapboxgl,
+          // Limit search country to Australia
+          countries: "au",
+          // Limit search types to postcode / suburb
+          types: "postcode, locality",
       })
       );
     
