@@ -11,7 +11,10 @@ export default async function fetchData(
     method,
   } = req;
 
-  console.log(postcode);
+  // Return 400 if postcode not provided in query body
+  if ( !postcode ) {
+    return res.status(400).json({message: 'Postcode not defined in query body. Use the ?postcode= prop.'})
+  }
 
   const connection = await createConnection(process.env.DATABASE_URL);
 
@@ -20,5 +23,5 @@ export default async function fetchData(
   // [1] is buffer object, only return results
   const data = results[0];
 
-  return res.status(200).json({ results });
+  return res.status(200).json({ data });
 }
