@@ -15,7 +15,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoidXNrb21wdWYiLCJhIjoiY2pnZzJvcHR4MDl0czJ4cW0zZ
 const Home: NextPage = () => {
 
   // When postcode is searched via the box or by clicking, toggle this to true and render data card
-  const [searchState, setSearchState] = useState(false);
+  const [postcode, setPostcode] = useState(null);
 
   // Initialise data fetching
   const { data, error } = useSWR("/api/data", fetcher)
@@ -23,7 +23,9 @@ const Home: NextPage = () => {
   
   useEffect(() => {
     console.log("Postcode search triggered")
-  }, [searchState])
+
+    // Return data card
+  }, [postcode])
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -69,7 +71,7 @@ const Home: NextPage = () => {
             console.log(tempPostcode);
           }
           currentPostcode = tempPostcode;
-          setSearchState(true);
+          setPostcode(currentPostcode);
         }
       });
   
@@ -79,9 +81,10 @@ const Home: NextPage = () => {
 
       // When postcode is searched, return data in card
       geocoder.on('result', function(result) {
+        map.setLayoutProperty('final-dyqn3f (1)', 'visibility', 'visible');
         console.log(map.getStyle().layers);
         console.log(result.result.text);
-        setSearchState(true);
+        setPostcode(result.result.text);
       });
     
   }, []);
