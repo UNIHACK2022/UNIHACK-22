@@ -3,6 +3,8 @@
 import React from "react";
 import useSWR from "swr";
 import fetcher from "../lib/fetcher";
+import ReactDOM from "react-dom";
+import { CaretUp, CaretDown } from "phosphor-react";
 
 export default function DataCard({
   postcode,
@@ -70,37 +72,43 @@ export default function DataCard({
       // Render = sign and 'same as state average'
 
   // Calculate deviance from state averages for stats
-
   let carbonEmissionsDeviance;
   let installedSolarDeviance;
+  let state;
 
   if (data.data[0].State == "Australian Capital Territory") {
-      carbonEmissionsDeviance = (((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.ACT))/(householdCarbonEmissionsAverages.ACT)) * 100
-     installedSolarDeviance = (((data.data[0].Installed_Solar_kW) -(installedSolarAverages.ACT))/(installedSolarAverages.ACT)) * 100
+      state = 'ACT'
+      carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.ACT))/(householdCarbonEmissionsAverages.ACT)) * 100).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.ACT))/(installedSolarAverages.ACT)) * 100).toFixed(2)
   } else if (data.data[0].State == "New South Wales") {
-        carbonEmissionsDeviance = (((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.NSW))/(householdCarbonEmissionsAverages.NSW)) * 100
-     installedSolarDeviance = (((data.data[0].Installed_Solar_kW) -(installedSolarAverages.NSW))/(installedSolarAverages.NSW)) * 100
+         state = 'NSW'
+        carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.NSW))/(householdCarbonEmissionsAverages.NSW)) * 100).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.NSW))/(installedSolarAverages.NSW)) * 100).toFixed(2)
   } else if (data.data[0].State == "Northern Territory") {
-       carbonEmissionsDeviance = (((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.NT))/(householdCarbonEmissionsAverages.NT)) * 100
-     installedSolarDeviance = (((data.data[0].Installed_Solar_kW) -(installedSolarAverages.NT))/(installedSolarAverages.NT)) * 100   
+         state = 'NT'
+       carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.NT))/(householdCarbonEmissionsAverages.NT)) * 100).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.NT))/(installedSolarAverages.NT)) * 100 ).toFixed(2)  
   } else if (data.data[0].State == "Queensland") {
-        carbonEmissionsDeviance = (((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.QLD))/(householdCarbonEmissionsAverages.QLD)) * 100
-     installedSolarDeviance = (((data.data[0].Installed_Solar_kW) -(installedSolarAverages.QLD))/(installedSolarAverages.QLD)) * 100  
+         state = 'QLD'
+        carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.QLD))/(householdCarbonEmissionsAverages.QLD)) * 100).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.QLD))/(installedSolarAverages.QLD)) * 100 ).toFixed(2) 
   } else if (data.data[0].State == "Southern Australia") {
-        carbonEmissionsDeviance = (((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.SA))/(householdCarbonEmissionsAverages.SA)) * 100
-     installedSolarDeviance = (((data.data[0].Installed_Solar_kW) -(installedSolarAverages.SA))/(installedSolarAverages.SA)) * 100  
+         state = 'SA'
+        carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.SA))/(householdCarbonEmissionsAverages.SA)) * 100).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.SA))/(installedSolarAverages.SA)) * 100  ).toFixed(2)
   } else if (data.data[0].State == "Tasmania") {
-        carbonEmissionsDeviance = (((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.TAS))/(householdCarbonEmissionsAverages.TAS)) * 100
-     installedSolarDeviance = (((data.data[0].Installed_Solar_kW) -(installedSolarAverages.TAS))/(installedSolarAverages.TAS)) * 100  
+         state = 'TAS'
+        carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.TAS))/(householdCarbonEmissionsAverages.TAS)) * 100).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.TAS))/(installedSolarAverages.TAS)) * 100  ).toFixed(2)
   } else if (data.data[0].State == "Victoria") {
-        carbonEmissionsDeviance = (((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.VIC))/(householdCarbonEmissionsAverages.VIC)) * 100
-     installedSolarDeviance = (((data.data[0].Installed_Solar_kW) -(installedSolarAverages.VIC))/(installedSolarAverages.VIC)) * 100  
+         state = 'VIC'
+        carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.VIC))/(householdCarbonEmissionsAverages.VIC)) * 100).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.VIC))/(installedSolarAverages.VIC)) * 100  ).toFixed(2)
   } else if (data.data[0].State == "Western Australia") {
-        carbonEmissionsDeviance = (((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.WA))/(householdCarbonEmissionsAverages.WA)) * 100
-     installedSolarDeviance = (((data.data[0].Installed_Solar_kW) -(installedSolarAverages.WA))/(installedSolarAverages.WA)) * 100  
+         state = 'WA'
+        carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.WA))/(householdCarbonEmissionsAverages.WA)) * 100).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.WA))/(installedSolarAverages.WA)) * 100  ).toFixed(2)
   } 
-
-  console.log(householdCarbonEmissionsAverages.NSW)
 
   
   return (
@@ -110,13 +118,25 @@ export default function DataCard({
         <div className="w-full border-t my-4" />
         <h2 className="text-sm font-medium pb-1">Household Electricity Carbon Emissions (Daily)</h2>
         <p className="text-2xl pb-1">{carbonEmissions} kW</p>
-        <p className="text-sm text-neutral-600 pb-3">{carbonEmissionsDeviance}</p>
+        {carbonEmissionsDeviance > 0 ? <div className="flex flex-row gap-2 items-center pb-2">
+          <CaretUp size={16} weight="fill" className="text-green-500"/>
+          <p className="text-sm text-neutral-500">{carbonEmissionsDeviance}% above {state} average</p>
+        </div> : <div className="flex flex-row gap-1 pb-3 items-center pb-2">
+          <CaretDown size={16} weight="fill" className="text-red-500"/>
+          <p className="text-sm text-neutral-500">{carbonEmissionsDeviance}% below {state} average</p>
+        </div> }
         <h2 className="text-sm font-medium pb-1">Installed Solar</h2>
     <p className="text-2xl pb-1">{data.data[0].Installed_Solar_kW} kW</p>
-    <p className="text-sm text-neutral-600 pb-2">{installedSolarDeviance}</p>
+        {installedSolarDeviance > 0 ? <div className="flex flex-row gap-2 items-center pb-2">
+          <CaretUp size={16} weight="fill" className="text-green-500"/>
+          <p className="text-sm text-neutral-500">{installedSolarDeviance}% above {state} average</p>
+        </div> : <div className="flex flex-row gap-1 pb-3 items-center pb-2">
+          <CaretDown size={16} weight="fill" className="text-red-500"/>
+          <p className="text-sm text-neutral-500">{installedSolarDeviance}% below {state} average</p>
+        </div> }
         <h2 className="text-sm font-medium pb-1">Renewable Energy</h2>
     <p className="text-2xl pb-1">{renewableEnergy} %</p>
-    <p className="text-sm text-neutral-600 pb-2">placeholder - deviance from state average</p>
+    <p className="text-sm text-neutral-600 pb-2">unsure if can do anything here, only varies on state level</p>
       </div>
 
   )
