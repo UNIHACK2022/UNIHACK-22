@@ -5,10 +5,11 @@ import { useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import useSWR from 'swr' // Handle data loading / error / successful states
 import fetcher from "../lib/fetcher";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import DataCard from "../components/DataCard";
 import HomeCard from "../components/HomeCard";
 import Stars from "../components/Stars";
+import Layers from "../components/Layers";
 import React from "react";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
@@ -22,6 +23,14 @@ const Home: NextPage = () => {
   const [postcode, setPostcode] = useState(null);
   const [dataVisible, setDataVisible] = useState(false)
   const [firstRender, setFirstRender] = useState(true)
+  const [layer, setLayer] = useState(null);
+  const [mapLayer, setMapLayer] = useState('');
+  const map = useRef();
+
+  const updateMapLayer = (state) => {
+    setMapLayer(state);
+  }
+
 
   // Postcode search logic
   useEffect(() => {
@@ -37,10 +46,10 @@ const Home: NextPage = () => {
 
 
   useEffect(() => {
-    const map = new mapboxgl.Map({
+    map = new mapboxgl.Map({
       // Map controls
       // Use our data visualisation with postcode boundaries, etc.
-      style: 'mapbox://styles/uskompuf/cl01t9qd2008m14p7zm4bgg9d',
+      style: 'mapbox://styles/uskompuf/cl01t9qd2008m14p7zm4bgg9d/draft',
       // Center map to Sydney
       center: [151.209, -33.8688],
       // Zoom out a bit
@@ -48,9 +57,8 @@ const Home: NextPage = () => {
       // Pitch map a bit for '3D' effect
       pitch: 30,
       // bearing: -17.6,
-      container: 'mapbox',
+      container: 'mapbox'
       });  
-      let hoveredStateId = null;
 
       // Initialise address search input
       map.addControl(new mapboxgl.NavigationControl())
@@ -71,53 +79,100 @@ const Home: NextPage = () => {
       // Position geocoder to top left of map on first render
       if (firstRender == true) {
         document.getElementById('container').appendChild(geocoder.onAdd(map));
-      } 
+      }
 
-      // Update postcode on click
-      map.on('click', 'final-dyqn3f (5)', (e) => {
-        if (e.features.length > 0) {
-          setPostcode(e.features[0].properties.POA_CODE21)
+
+        // map.on('load', function () {
+    //map.setLayoutProperty('final-dyqn3f (6)', 'visibility', 'none'); // %Households with solar
+    //map.setLayoutProperty('final-dyqn3f (3)', 'visibility', 'none'); // Dwelling density
+    //map.setLayoutProperty('final-dyqn3f', 'visibility', 'none'); // NCC Climate Zone 1 - 9
+  // });
+    
+      map.on('load', function () {
+        if (mapLayer == 1) {
+          // Set layer - households with solar
+          map.setLayoutProperty('postcodesSolar', 'visibility', 'visible');
+          map.setLayoutProperty('postcodesDensity', 'visibility', 'none');
+          map.setLayoutProperty('postcodesClimate', 'visibility', 'none');
+        } else if (mapLayer == 2) {
+          // Set layer - dwelling density
+          map.setLayoutProperty('postcodesDensity', 'visibility', 'visible'); 
+          map.setLayoutProperty('postcodesSolar', 'visibility', 'none');
+          map.setLayoutProperty('postcodesClimate', 'visibility', 'none');
+          // Set layer - climate zones
+        } else if (mapLayer == 3) {
+          map.setLayoutProperty('postcodesClimate', 'visibility', 'visible');
+          map.setLayoutProperty('postcodesSolar', 'visibility', 'none');
+          map.setLayoutProperty('postcodesDensity', 'visibility', 'none');
         }
       });
 
-      // AHHHHH  
-      // When the user moves their mouse over the state-fill layer, we'll update the
-      // feature state for the feature under the mouse.
-      map.on('mousemove', 'final-dyqn3f (5)', (e) => {
+      // Update postcode on click
+      map.on('click', 'postcodesBase', (e) => {
         if (e.features.length > 0) {
-          if (hoveredStateId !== null) {
-            map.setFeatureState(
-              { source: 'composite', id: hoveredStateId, sourceLayer: 'final-dyqn3f' },
-              { hover: false }
-            );
+          setPostcode(e.features[0].properties.POA_CODE21);
+        }
+      });
+
+      // Set selected postcode to all polygons for selective styling
+      map.on('mousemove', 'postcodesBase', (e) => {
+        if (e.features.length > 0) {
+          var features = map.querySourceFeatures('composite', {
+            'sourceLayer': 'final'
+          });
+          for (const feature of features){
+              var id = feature.id;
+              map.setFeatureState(
+                { source: 'composite', id: id, sourceLayer: 'final' },
+                { selectedPostcode: e.features[0].properties.POA_CODE21 }
+              );
           }
-          hoveredStateId = e.features[0].id;
-          map.setFeatureState(
-            { source: 'composite', id: hoveredStateId, sourceLayer: 'final-dyqn3f' },
-            { hover: true }
-          );
         }
       });
        
-      // When the mouse leaves the state-fill layer, update the feature state of the
-      // previously hovered feature.
-      map.on('mouseleave', 'final-dyqn3f (5)', () => {
-        if (hoveredStateId !== null) {
-          map.setFeatureState(
-            { source: 'composite', id: hoveredStateId, sourceLayer: 'final-dyqn3f' },
-            { hover: false }
-          );
-        }
-        hoveredStateId = null;
+      // Reset selected postcode when cursor leaves map
+      map.on('mouseleave', 'postcodesBase', () => {
+        var features = map.querySourceFeatures('composite', {
+            'sourceLayer': 'final'
+          });
+          for (const feature of features){
+              var id = feature.id;
+              map.setFeatureState(
+                { source: 'composite', id: id, sourceLayer: 'final' },
+                { selectedPostcode: null }
+              );
+          }
       });
       
       // When postcode is searched, return data in card
       geocoder.on('result', function(result) {
         setPostcode(result.result.text);
+        console.log(map.getStyle().layers);
       });
+  });
 
-  }, []);
 
+  useEffect(() => {
+    if (mapLayer == 1) {
+      // Set layer - households with solar
+      map.setLayoutProperty('postcodesSolar', 'visibility', 'visible');
+      map.setLayoutProperty('postcodesDensity', 'visibility', 'none');
+      map.setLayoutProperty('postcodesClimate', 'visibility', 'none');
+    } else if (mapLayer == 2) {
+      // Set layer - dwelling density
+      map.setLayoutProperty('postcodesDensity', 'visibility', 'visible'); 
+      map.setLayoutProperty('postcodesSolar', 'visibility', 'none');
+      map.setLayoutProperty('postcodesClimate', 'visibility', 'none');
+      // Set layer - climate zones
+    } else if (mapLayer == 3) {
+      map.setLayoutProperty('postcodesClimate', 'visibility', 'visible');
+      map.setLayoutProperty('postcodesSolar', 'visibility', 'none');
+      map.setLayoutProperty('postcodesDensity', 'visibility', 'none');
+    }
+  }, [mapLayer])
+
+
+  
   useEffect(() => {
     setFirstRender(false);
   }, [])
@@ -132,8 +187,12 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
+        {/* TODO: Change searchbar width to width of below cards */}
       <div className="absolute z-40 flex w-max h-max mx-6 my-4" id="container" />
-    
+      <div className="absolute z-40 top-28">
+        <Layers mapLayer={mapLayer} triggerParentUpdate={updateMapLayer} />
+      </div>
+      
       {dataVisible === true && (
         <DataCard postcode={postcode} />
       )}

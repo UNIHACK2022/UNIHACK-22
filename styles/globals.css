@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mapboxgl-ctrl-geocoder {
+    width: 288px!important;
+    
+}

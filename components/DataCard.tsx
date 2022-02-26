@@ -27,14 +27,14 @@ export default function DataCard({
   }
 
    const installedSolarAverages = {
-    ACT: 9552.967742,
-    NSW: 12967.78561,
-    NT: 5853.837209,
-    QLD: 18378.27182,
-    SA: 7126.44152,
-    TAS: 1916.614035,
-    VIC: 5645.962264,
-    WA: 6104.019022,
+    ACT: 26.43565667,
+    NSW: 30.19622172,
+    NT: 23.1865474,
+    QLD: 44.87239447,
+    SA: 43.92686272,
+    TAS: 18.13184765,
+    VIC: 23.81908195,
+    WA: 36.92370803,
   }
 
    const starRatingAverages = {
@@ -76,7 +76,7 @@ export default function DataCard({
   // TODO: When data cleared, RETURN TO LANDING CARD
 
   const carbonEmissions = Number.parseFloat(data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG).toFixed(2)
-    const installedSolar = Number.parseFloat(data.data[0].Installed_Solar_kW).toFixed(2)
+  const installedSolar = Number.parseFloat(data.data[0].Dwellings_with_Solar/data.data[0].Number_of_Dwellings*100).toFixed(2)
   const renewableEnergy = Number.parseFloat(data.data[0].Renewable_Energy_Percentage*100).toFixed(2)
 
     // If state = x
@@ -99,42 +99,42 @@ export default function DataCard({
   if (data.data[0].State == "Australian Capital Territory") {
       state = 'ACT'
       carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.ACT))/(householdCarbonEmissionsAverages.ACT)) * 100).toFixed(2)
-     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.ACT))/(installedSolarAverages.ACT)) * 100).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((installedSolar) -(installedSolarAverages.ACT))/(installedSolarAverages.ACT)) * 100).toFixed(2)
        starRatingDeviance = Number.parseFloat((((data.data[0].Household_Energy_Efficiency_stars) -(starRatingAverages.ACT))/(starRatingAverages.ACT)) * 100).toFixed(2)
   } else if (data.data[0].State == "New South Wales") {
          state = 'NSW'
         carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.NSW))/(householdCarbonEmissionsAverages.NSW)) * 100).toFixed(2)
-     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.NSW))/(installedSolarAverages.NSW)) * 100).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((installedSolar) -(installedSolarAverages.NSW))/(installedSolarAverages.NSW)) * 100).toFixed(2)
          starRatingDeviance = Number.parseFloat((((data.data[0].Household_Energy_Efficiency_stars) -(starRatingAverages.NSW))/(starRatingAverages.NSW)) * 100).toFixed(2)
   } else if (data.data[0].State == "Northern Territory") {
          state = 'NT'
        carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.NT))/(householdCarbonEmissionsAverages.NT)) * 100).toFixed(2)
-     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.NT))/(installedSolarAverages.NT)) * 100 ).toFixed(2)  
+     installedSolarDeviance = Number.parseFloat((((installedSolar) -(installedSolarAverages.NT))/(installedSolarAverages.NT)) * 100 ).toFixed(2)  
          starRatingDeviance = Number.parseFloat((((data.data[0].Household_Energy_Efficiency_stars) -(starRatingAverages.NT))/(starRatingAverages.NT)) * 100).toFixed(2)
   } else if (data.data[0].State == "Queensland") {
          state = 'QLD'
         carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.QLD))/(householdCarbonEmissionsAverages.QLD)) * 100).toFixed(2)
-     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.QLD))/(installedSolarAverages.QLD)) * 100 ).toFixed(2) 
+     installedSolarDeviance = Number.parseFloat((((installedSolar) -(installedSolarAverages.QLD))/(installedSolarAverages.QLD)) * 100 ).toFixed(2) 
          starRatingDeviance = Number.parseFloat((((data.data[0].Household_Energy_Efficiency_stars) -(starRatingAverages.QLD))/(starRatingAverages.QLD)) * 100).toFixed(2)
   } else if (data.data[0].State == "Southern Australia") {
          state = 'SA'
         carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.SA))/(householdCarbonEmissionsAverages.SA)) * 100).toFixed(2)
-     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.SA))/(installedSolarAverages.SA)) * 100  ).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((installedSolar) -(installedSolarAverages.SA))/(installedSolarAverages.SA)) * 100  ).toFixed(2)
          starRatingDeviance = Number.parseFloat((((data.data[0].Household_Energy_Efficiency_stars) -(starRatingAverages.SA))/(starRatingAverages.SA)) * 100).toFixed(2)
   } else if (data.data[0].State == "Tasmania") {
          state = 'TAS'
         carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.TAS))/(householdCarbonEmissionsAverages.TAS)) * 100).toFixed(2)
-     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.TAS))/(installedSolarAverages.TAS)) * 100  ).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((installedSolar) -(installedSolarAverages.TAS))/(installedSolarAverages.TAS)) * 100  ).toFixed(2)
          starRatingDeviance = Number.parseFloat((((data.data[0].Household_Energy_Efficiency_stars) -(starRatingAverages.TAS))/(starRatingAverages.TAS)) * 100).toFixed(2)
   } else if (data.data[0].State == "Victoria") {
          state = 'VIC'
         carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.VIC))/(householdCarbonEmissionsAverages.VIC)) * 100).toFixed(2)
-     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.VIC))/(installedSolarAverages.VIC)) * 100  ).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((installedSolar) -(installedSolarAverages.VIC))/(installedSolarAverages.VIC)) * 100  ).toFixed(2)
          starRatingDeviance = Number.parseFloat((((data.data[0].Household_Energy_Efficiency_stars) -(starRatingAverages.VIC))/(starRatingAverages.VIC)) * 100).toFixed(2)
   } else if (data.data[0].State == "Western Australia") {
          state = 'WA'
         carbonEmissionsDeviance = Number.parseFloat((((data.data[0].Daily_Household_Electrcitiy_Carbon_Emmisions_kG) - (householdCarbonEmissionsAverages.WA))/(householdCarbonEmissionsAverages.WA)) * 100).toFixed(2)
-     installedSolarDeviance = Number.parseFloat((((data.data[0].Installed_Solar_kW) -(installedSolarAverages.WA))/(installedSolarAverages.WA)) * 100  ).toFixed(2)
+     installedSolarDeviance = Number.parseFloat((((installedSolar) -(installedSolarAverages.WA))/(installedSolarAverages.WA)) * 100  ).toFixed(2)
          starRatingDeviance = Number.parseFloat((((data.data[0].Household_Energy_Efficiency_stars) -(starRatingAverages.WA))/(starRatingAverages.WA)) * 100).toFixed(2)
   } 
 
@@ -159,8 +159,8 @@ export default function DataCard({
           <CaretDown size={16} weight="fill" className="text-green-500"/>
           <p className="text-sm text-neutral-500">{carbonEmissionsDeviance}% below {state} average</p>
         </div> }
-        <h2 className="text-sm font-medium pb-1">Installed Solar</h2>
-    <p className="text-2xl pb-1">{data.data[0].Installed_Solar_kW} kW</p>
+        <h2 className="text-sm font-medium pb-1">Percentage of Households with Solar</h2>
+    <p className="text-2xl pb-1">{installedSolar} %</p>
         {installedSolarDeviance > 0 ? <div className="flex flex-row gap-2 items-center pb-2">
           <CaretUp size={16} weight="fill" className="text-green-500"/>
           <p className="text-sm text-neutral-500">{installedSolarDeviance}% above {state} average</p>
