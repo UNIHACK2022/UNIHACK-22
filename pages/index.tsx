@@ -8,6 +8,7 @@ import fetcher from "../lib/fetcher";
 import { useState } from "react";
 import DataCard from "../components/DataCard";
 import HomeCard from "../components/HomeCard";
+import Stars from "../components/Stars";
 import React from "react";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
@@ -20,6 +21,7 @@ const Home: NextPage = () => {
   // When postcode is searched via the box or by clicking, set value to postcode
   const [postcode, setPostcode] = useState(null);
   const [dataVisible, setDataVisible] = useState(false)
+  const [firstRender, setFirstRender] = useState(true)
 
   // Postcode search logic
   useEffect(() => {
@@ -48,11 +50,10 @@ const Home: NextPage = () => {
       // bearing: -17.6,
       container: 'mapbox',
       });  
-      let currentPostcode = null;
+      let hoveredStateId = null;
 
       // Initialise address search input
       map.addControl(new mapboxgl.NavigationControl())
-      
 
       // Return location that user searches for
       // TODO: Make this return suburb, etc to hook up to data
@@ -67,34 +68,61 @@ const Home: NextPage = () => {
           types: "postcode",
       })
 
-      // Add geocoder to map
-      map.addControl(geocoder);
+      // Position geocoder to top left of map on first render
+      if (firstRender == true) {
+        document.getElementById('container').appendChild(geocoder.onAdd(map));
+      } 
 
-      // Console log current postcode
-      map.on('mousemove', 'poa-2021-aust-gda2020-shp-78l7af', (e) => {
+      // Update postcode on click
+      map.on('click', 'final-dyqn3f (5)', (e) => {
         if (e.features.length > 0) {
-          let tempPostcode = e.features[0].properties.POA_CODE21;
-          if (currentPostcode == null || currentPostcode != tempPostcode) {
-            console.log(tempPostcode);
-          }
-          currentPostcode = tempPostcode;
-          setPostcode(currentPostcode);
+          setPostcode(e.features[0].properties.POA_CODE21)
         }
       });
-  
-      map.on('mouseleave', 'poa-2021-aust-gda2020-shp-78l7af', () => {
-        currentPostcode = null;
-      });
 
+      // AHHHHH  
+      // When the user moves their mouse over the state-fill layer, we'll update the
+      // feature state for the feature under the mouse.
+      map.on('mousemove', 'final-dyqn3f (5)', (e) => {
+        if (e.features.length > 0) {
+          if (hoveredStateId !== null) {
+            map.setFeatureState(
+              { source: 'composite', id: hoveredStateId, sourceLayer: 'final-dyqn3f' },
+              { hover: false }
+            );
+          }
+          hoveredStateId = e.features[0].id;
+          map.setFeatureState(
+            { source: 'composite', id: hoveredStateId, sourceLayer: 'final-dyqn3f' },
+            { hover: true }
+          );
+        }
+      });
+       
+      // When the mouse leaves the state-fill layer, update the feature state of the
+      // previously hovered feature.
+      map.on('mouseleave', 'final-dyqn3f (5)', () => {
+        if (hoveredStateId !== null) {
+          map.setFeatureState(
+            { source: 'composite', id: hoveredStateId, sourceLayer: 'final-dyqn3f' },
+            { hover: false }
+          );
+        }
+        hoveredStateId = null;
+      });
+      
       // When postcode is searched, return data in card
       geocoder.on('result', function(result) {
-        map.setLayoutProperty('final-dyqn3f (1)', 'visibility', 'visible');
-        console.log(map.getStyle().layers);
-        console.log(result.result.text);
         setPostcode(result.result.text);
       });
+
   }, []);
 
+  useEffect(() => {
+    setFirstRender(false);
+  }, [])
+
+  
   return (
     <div className="flex items-center justify-center min-h-screen">
       <Head>
@@ -104,7 +132,8 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-      {/* Split off landing card into React component? Then have info card as separate, etc. */}
+      <div className="absolute z-40 flex w-max h-max mx-6 my-4" id="container" />
+    
       {dataVisible === true && (
         <DataCard postcode={postcode} />
       )}
