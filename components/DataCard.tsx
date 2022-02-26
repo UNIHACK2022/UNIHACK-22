@@ -35,6 +35,8 @@ export default function DataCard({
     VIC: 5645.962264,
     WA: 6104.019022,
   }
+
+  const renewableEnergyNationalAverage = 0.3599782193
   
   // API endpoint URL
   const url = `/api/data?postcode=${postcode}`
@@ -75,6 +77,8 @@ export default function DataCard({
   let carbonEmissionsDeviance;
   let installedSolarDeviance;
   let state;
+
+  const renewableEnergyDeviance = Number.parseFloat((((data.data[0].Renewable_Energy_Percentage) - (renewableEnergyNationalAverage))/(renewableEnergyNationalAverage)) * 100).toFixed(2)
 
   if (data.data[0].State == "Australian Capital Territory") {
       state = 'ACT'
@@ -136,7 +140,13 @@ export default function DataCard({
         </div> }
         <h2 className="text-sm font-medium pb-1">Renewable Energy</h2>
     <p className="text-2xl pb-1">{renewableEnergy} %</p>
-    <p className="text-sm text-neutral-600 pb-2">unsure if can do anything here, only varies on state level</p>
+    {renewableEnergyDeviance > 0 ? <div className="flex flex-row gap-2 items-center pb-2">
+          <CaretUp size={16} weight="fill" className="text-green-500"/>
+          <p className="text-sm text-neutral-500">{renewableEnergyDeviance}% above national average</p>
+        </div> : <div className="flex flex-row gap-1 pb-3 items-center pb-2">
+          <CaretDown size={16} weight="fill" className="text-red-500"/>
+          <p className="text-sm text-neutral-500">{renewableEnergyDeviance}% below national average</p>
+        </div> }
       </div>
 
   )
