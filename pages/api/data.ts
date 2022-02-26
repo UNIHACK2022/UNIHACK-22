@@ -19,6 +19,8 @@ export default async function fetchData(
   const connection = await createConnection(process.env.DATABASE_URL);
 
   const query = `SELECT * from data WHERE postcode=${postcode}`;
+
+  // Return state average for postcode queried and use for comparisons
   const results = await connection.query(query);
   // [1] is buffer object, only return results
   const data = results[0];

@@ -6,6 +6,9 @@ import styles from "../styles/Home.module.css";
 import useSWR from 'swr' // Handle data loading / error / successful states
 import fetcher from "../lib/fetcher";
 import { useState } from "react";
+import DataCard from "../components/DataCard";
+import HomeCard from "../components/HomeCard";
+import React from "react";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
@@ -14,18 +17,22 @@ mapboxgl.accessToken = 'pk.eyJ1IjoidXNrb21wdWYiLCJhIjoiY2pnZzJvcHR4MDl0czJ4cW0zZ
 
 const Home: NextPage = () => {
 
-  // When postcode is searched via the box or by clicking, toggle this to true and render data card
+  // When postcode is searched via the box or by clicking, set value to postcode
   const [postcode, setPostcode] = useState(null);
+  const [dataVisible, setDataVisible] = useState(false)
 
-  // Initialise data fetching
-  const { data, error } = useSWR("/api/data", fetcher)
-
-  
+  // Postcode search logic
   useEffect(() => {
-    console.log("Postcode search triggered")
-
-    // Return data card
+    // Prevent hook from running on initial render
+    if (postcode !== null) {
+      console.log("Postcode search triggered")
+      console.log(`The postcode you searched for is ${postcode}`)
+      // Return data card
+      setDataVisible(true);
+      
+    }
   }, [postcode])
+
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -86,7 +93,6 @@ const Home: NextPage = () => {
         console.log(result.result.text);
         setPostcode(result.result.text);
       });
-    
   }, []);
 
   return (
@@ -99,10 +105,12 @@ const Home: NextPage = () => {
 
       <main>
       {/* Split off landing card into React component? Then have info card as separate, etc. */}
-      <div className="absolute flex flex-col z-40 w-72 h-max left-4 top-4 bg-white drop-shadow rounded-md px-6 py-6 content-start gap-4">
-        <h1 className="text-lg font-bold">🍞    Toasty Bread</h1>
-        <p className="italic">Climate change can be overwhelming. The science is complex, and when it comes to future impacts, there are still a lot of unknowns. While real solutions will require action on a global scale, there are choices you can make in your day-to-day life to lessen your personal impact on the environment.</p>
-      </div>
+      {dataVisible === true && (
+        <DataCard postcode={postcode} />
+      )}
+      {dataVisible === false && (
+        <HomeCard />
+      )}
 
         
       <div id="mapbox" className="w-screen h-screen" />
