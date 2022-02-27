@@ -338,7 +338,7 @@ export default function HomeCard() {
 
         <div className="flex flex-row items-center gap-1 pt-4">
           <GlobeHemisphereEast size={24} weight="fill" className="text-emerald-300" />
-          <p className="text-lg font-semibold text-emerald-300">Greenway</p>
+          <p className="text-lg font-semibold text-emerald-300">Greenways</p>
         </div>
  
         <p className="pt-2 text-sm font-medium text-emerald-300">
