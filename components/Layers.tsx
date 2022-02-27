@@ -22,8 +22,7 @@ export default function Layers({ mapLayer, triggerParentUpdate }) {
   // Change layer state in parent component when radio toggled
   useEffect(() => {
     triggerParentUpdate(value);
-    console.log(value);
-  }, [value]);
+  });
 
   return (
     <Popover placement="left">

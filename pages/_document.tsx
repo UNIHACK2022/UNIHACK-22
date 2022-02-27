@@ -1,6 +1,5 @@
 import NextDocument, { Html, Head, Main, NextScript } from "next/document";
 import React from "react";
-import Script from "next/script";
 type Props = {};
 
 class Document extends NextDocument<Props> {
@@ -21,7 +20,6 @@ class Document extends NextDocument<Props> {
             href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css"
             rel="stylesheet"
           />
-         <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
         </Head>
         <body>
           <Main />

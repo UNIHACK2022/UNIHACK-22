@@ -6,7 +6,7 @@ export default function HomeCard() {
   return (
     <div className="absolute flex flex-col z-30 left-[1.5rem] top-16 content-start gap-4">
       <div className="flex flex-col content-start px-6 py-6 bg-white rounded-lg w-96 h-max drop-shadow">
-        <h1 className="pb-2 text-xl font-semibold">How green's your suburb?</h1>
+        <h1 className="pb-2 text-xl font-semibold">How green&apos;s your suburb?</h1>
         <p className="pb-4">
           Fighting climate change starts with reducing our carbon footprint -
           the amount of carbon we release into the atmosphere - on a community

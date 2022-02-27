@@ -25,7 +25,7 @@ const starSize = 18;
     arr.push(i);
   }
 
-  var renderedOutput = arr.map((item) => <Star size={starSize} weight="fill" className="text-yellow-500" />);
+  var renderedOutput = arr.map((item, i) => <Star size={starSize} key={i} weight="fill" className="text-yellow-500" />);
 
   return (
       <div className="flex flex-row items-center">
@@ -35,7 +35,7 @@ const starSize = 18;
             <Star size={starSize} weight="fill" />
           </div>
         </div>
-        <div className="relative flex flex-row gap-1 items-center">
+        <div className="relative flex flex-row items-center gap-1">
           <Star size={starSize} weight="fill" className="text-neutral-300" />
           <Star size={starSize} weight="fill" className="text-neutral-300" />
           <Star size={starSize} weight="fill" className="text-neutral-300" />
@@ -44,7 +44,7 @@ const starSize = 18;
           <Star size={starSize} weight="fill" className="text-neutral-300" />
           <Star size={starSize} weight="fill" className="text-neutral-300" />
           <Star size={starSize} weight="fill" className="text-neutral-300" />
-          <p className="font-sm pl-1 font-medium text-neutral-800">{Number.parseFloat(rating).toFixed(1)}/8</p>
+          <p className="pl-1 font-medium font-sm text-neutral-800">{Number.parseFloat(rating).toFixed(1)}/8</p>
         </div> 
       </div>
   );
