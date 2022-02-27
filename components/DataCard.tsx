@@ -10,6 +10,8 @@ import {
   Spinner,
   WarningOctagon,
   Info,
+  Leaf,
+  GraduationCap,
 } from "phosphor-react";
 import { MathOperations, BookOpen, Lightning, CarSimple } from "phosphor-react";
 
@@ -407,11 +409,6 @@ export default function DataCard({ postcode }: { postcode: any }) {
       </div>
       <div className="flex flex-col z-30 w-72 h-max left-[1.5rem] top-16 bg-white drop-shadow rounded-md px-6 py-6 content-start">
         <h1 className="pb-2 text-lg font-semibold">What can you do to help?</h1>
-        <h2 className="pb-1 font-semibold text-md">Start a conversation</h2>
-        <p className="pb-4 text-sm">
-          Changing your suburb’s carbon footprint starts with your community.
-          Here’s a template you can use to email your local councilor.
-        </p>
         <h2 className="pb-1 font-semibold text-md">
           Reduce your carbon footprint
         </h2>
@@ -420,7 +417,7 @@ export default function DataCard({ postcode }: { postcode: any }) {
           can reduce yours by making small changes. And if we do it together,
           it’ll compound into massive change.
         </p>
-        <div className="mb-4 border-t mt-7 border-neutral-300" />
+        <div className="mt-6 mb-4 border-t border-neutral-300" />
         <div className="flex flex-col items-start">
           <div className="flex flex-row items-center gap-2 pb-2 text-neutral-800">
             <MathOperations size={18} weight="fill" />
@@ -432,20 +429,44 @@ export default function DataCard({ postcode }: { postcode: any }) {
               onClick={solarOpen}
             >
               <Lightning size={14} weight="fill" className="text-yellow-500" />
-              <p className="transition-all hover:text-green-900">Solar Panel Savings</p>
+              <p className="transition-all hover:text-green-900">
+                Solar Panel Savings
+              </p>
             </button>
             <button
               className="flex flex-row items-center gap-2 text-sm"
               onClick={electricOpen}
             >
               <CarSimple size={14} weight="fill" className="text-red-500" />
-              <p className="transition-all hover:text-green-900">Electric Car Savings</p>
+              <p className="transition-all hover:text-green-900">
+                Electric Car Savings
+              </p>
             </button>
           </div>
 
           <div className="flex flex-row items-center gap-2 pt-3 pb-2">
             <BookOpen size={18} weight="fill" />
             <p className="text-base font-medium">Guides</p>
+          </div>
+          <div className="flex flex-col gap-1">
+            <a
+              className="flex flex-row items-center gap-2 text-sm"
+              href="https://www.nytimes.com/guides/year-of-living-better/how-to-reduce-your-carbon-footprint"
+            >
+              <Leaf size={14} weight="fill" className="text-emerald-500" />
+              <p className="transition-all hover:text-green-900">
+                NYT - How to Reduce Your Carbon Footprint
+              </p>
+            </a>
+            <a
+              className="flex flex-row items-center gap-2 text-sm"
+              href="https://www.nytimes.com/guides/year-of-living-better/how-to-reduce-your-carbon-footprint"
+            >
+              <GraduationCap size={14} weight="fill" className="text-blue-500" />
+              <p className="transition-all hover:text-green-900">
+                Monash - How to Reduce Your Carbon Footprint
+              </p>
+            </a>
           </div>
         </div>
       </div>

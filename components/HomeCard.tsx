@@ -5,6 +5,10 @@ import {
   Lightning,
   CarSimple,
   ArrowRight,
+  Leaf,
+  GraduationCap,
+  GlobeHemisphereEast,
+  Globe
 } from "phosphor-react";
 import { useState } from "react";
 import SolarCalculator from "./SolarCalculator";
@@ -114,6 +118,26 @@ export default function HomeCard() {
           <div className="flex flex-row items-center gap-2 pt-3 pb-2">
             <BookOpen size={18} weight="fill" />
             <p className="text-base font-medium">Guides</p>
+          </div>
+          <div className="flex flex-col gap-1">
+            <a
+              className="flex flex-row items-center gap-2 text-sm"
+              href="https://www.nytimes.com/guides/year-of-living-better/how-to-reduce-your-carbon-footprint"
+            >
+              <Leaf size={14} weight="fill" className="text-emerald-500" />
+              <p className="transition-all hover:text-green-900">
+                NYT - How to Reduce Your Carbon Footprint
+              </p>
+            </a>
+            <a
+              className="flex flex-row items-center gap-2 text-sm"
+              href="https://www.nytimes.com/guides/year-of-living-better/how-to-reduce-your-carbon-footprint"
+            >
+              <GraduationCap size={14} weight="fill" className="text-blue-500" />
+              <p className="transition-all hover:text-green-900">
+                Monash - How to Reduce Your Carbon Footprint
+              </p>
+            </a>
           </div>
         </div>
       </div>
@@ -289,15 +313,15 @@ export default function HomeCard() {
         </ModalContent>
       </Modal>
 
-      <div className="flex flex-col content-start px-6 py-6 bg-white rounded-lg w-96 h-max drop-shadow">
-        <h1 className="pb-2 text-lg font-semibold leading-7">
+      <div className="flex flex-col content-start px-6 py-6 rounded-lg bg-emerald-800 w-96 h-max drop-shadow">
+        <h1 className="pb-2 text-lg font-semibold leading-7 text-emerald-50">
           Empowering individuals, communities and governments to visualise and
           accelerate their progress towards stopping climate change.
         </h1>
 
         <div className="flex flex-col gap-1">
           <button
-            className="flex flex-row items-center gap-1 hover:text-green-900"
+            className="flex flex-row items-center gap-1 text-emerald-100 hover:text-emerald-50"
             onClick={onOpen}
           >
             <p className="text-sm font-medium transition-all">
@@ -306,16 +330,20 @@ export default function HomeCard() {
             <ArrowRight size={14} weight="bold" />
           </button>
 
-          <button className="flex flex-row items-center gap-1 hover:text-green-900">
-            <p className="text-sm font-medium transition-all">GitHub</p>
+          <button className="flex flex-row items-center gap-1 text-emerald-100 hover:text-emerald-50">
+            <a className="text-sm font-medium transition-all" href="https://github.com/UNIHACK2022/UNIHACK-22">GitHub</a>
             <ArrowRight size={14} weight="bold" />
           </button>
         </div>
 
-        <p className="pb-2">Greenway logo here</p>
-        <p className="text-sm text-neutral-500">
-          Made with <span className="text-red-700">♥</span> by Luke, Tiff,
-          Terrie, Jeff and Ayush at UNIHACK ‘22 in Sydney.
+        <div className="flex flex-row items-center gap-1 pt-4">
+          <GlobeHemisphereEast size={24} weight="fill" className="text-emerald-300" />
+          <p className="text-lg font-semibold text-emerald-300">Greenway</p>
+        </div>
+ 
+        <p className="pt-2 text-sm font-medium text-emerald-300">
+          Made with <span className="text-red-500">♥</span> by Luke, Jeff, Tiff,
+          and Terrie at UNIHACK ‘22 in Sydney.
         </p>
       </div>
     </div>

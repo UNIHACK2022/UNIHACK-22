@@ -7,7 +7,7 @@ import DataCard from "../components/DataCard";
 import HomeCard from "../components/HomeCard";
 import Layers from "../components/Layers";
 import Legend from "../components/Legend";
-import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
+import * as MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import SolarCalculator from "../components/SolarCalculator";
 import EVCalculator from "../components/EVCalculator";
 
@@ -16,7 +16,6 @@ var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 // Doesn't work as local env variable
 mapboxgl.accessToken =
   "pk.eyJ1IjoidXNrb21wdWYiLCJhIjoiY2pnZzJvcHR4MDl0czJ4cW0zZTAxYnY5ZiJ9.EtWLN3Q74QDC6PpFDsvFig";
-
 
 const Home: NextPage = () => {
   // When postcode is searched via the box or by clicking, set value to postcode
@@ -62,9 +61,7 @@ const Home: NextPage = () => {
     });
 
     // Add geolocate control to the map.
-    map.current.addControl(
-      new mapboxgl.GeolocateControl()
-    );
+    map.current.addControl(new mapboxgl.GeolocateControl());
 
     // Intitialise search input
     geocoder.current = new MapboxGeocoder({
@@ -188,7 +185,6 @@ const Home: NextPage = () => {
         <Legend mapLayer={mapLayer} />
 
         <div ref={mapContainer} className="w-screen h-screen" />
-
       </main>
     </div>
   );

@@ -19,7 +19,7 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { Divider } from "@chakra-ui/react";
-import { X } from "phosphor-react";
+import { X, DotsSix } from "phosphor-react";
 import { useEffect, useState } from "react";
 
 export default function SolarCalculator({close}) {
@@ -27,19 +27,21 @@ export default function SolarCalculator({close}) {
   const parse = (val) => val.replace(/^\$/, "");
 
   const [size, setSize] = React.useState(6);
-  const [bill, setBill] = React.useState(400);
+  const [bill, setBill] = React.useState(1600);
 
-  const generation = 4.4 * size;
-  const generationYearly = generation * 365.25;
+  const generation = 4.4 * size * 365.25;
   const savings = bill - generation * 0.11;
-  const carbon = generation * 0.2;
-  const trees = carbon * 0.0117;
+  const carbon = generation * 0.2 ;
+  const trees = carbon * 0.0117 ;
 
 
   return (
     <Draggable>
-      <div className="absolute z-50 flex flex-col justify-start px-5 py-6 rounded-lg bg-emerald-800 w-[400px] top-5 h-max drop-shadow-md">
+      <div className="absolute z-50 flex flex-col justify-start px-5 pb-6 pt-8 rounded-lg bg-emerald-800 w-[400px] top-0 left-[26rem] h-max drop-shadow-md">
         <div className="flex flex-row items-center justify-between">
+          <button className="absolute top-0 left-1/2 translate-x-[-50%] text-emerald-200">
+            <DotsSix size={24} weight="fill"/>
+          </button>
           <h1 className="text-lg font-semibold text-emerald-50">
             Solar Panel Calculator
           </h1>
@@ -69,11 +71,11 @@ export default function SolarCalculator({close}) {
         </Slider>
         <div className="flex flex-row items-center justify-between gap-12 pt-4">
           <h2 className="font-medium text-md text-emerald-50">
-            Quarterly bill cost
+            Yearly bill cost
           </h2>
           <NumberInput
-            step={10}
-            defaultValue={400}
+            step={100}
+            defaultValue={1600}
             onChange={(valueString) => setBill(parse(valueString))}
             value={format(bill)}
             className="text-emerald-50"
@@ -93,15 +95,25 @@ export default function SolarCalculator({close}) {
             Generation (yearly)
           </h2>
           <p className="text-lg text-emerald-50">
-            {Number.parseFloat(generationYearly).toFixed(2)} kW
+            {Number.parseFloat(generation).toFixed(2)} kW
           </p>
         </div>
-        <div className="flex flex-row items-center justify-between">
-          <h2 className="font-medium text-md text-emerald-50">Savings</h2>
-          <p className="text-lg text-emerald-50">
-            ${Number.parseFloat(savings).toFixed(2)}
-          </p>
-        </div>
+          { savings < 0 ? 
+          <div className="flex flex-row items-center justify-between">
+            <h2 className="font-medium text-md text-emerald-50">New yearly bill credit</h2>
+            <p className="text-lg text-emerald-50">
+              ${Math.abs(Number.parseFloat(savings).toFixed(2))}
+            </p>
+          </div>
+          :
+          <div className="flex flex-row items-center justify-between">
+            <h2 className="font-medium text-md text-emerald-50">New yearly bill cost</h2>
+            <p className="text-lg text-emerald-50">
+              ${Number.parseFloat(savings).toFixed(2)}
+            </p>
+          </div>         
+          }
+
         <div className="flex flex-row items-center justify-between">
           <h2 className="font-medium text-md text-emerald-50">
             Carbon savings

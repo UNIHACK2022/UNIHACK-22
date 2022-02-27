@@ -19,9 +19,9 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { Divider } from "@chakra-ui/react";
-import { X } from "phosphor-react";
+import { X, DotsSix } from "phosphor-react";
 
-export default function EVCalculator({close}) {
+export default function EVCalculator({ close }) {
   const format = (val) => `$` + val;
   const parse = (val) => val.replace(/^\$/, "");
 
@@ -35,8 +35,12 @@ export default function EVCalculator({close}) {
 
   return (
     <Draggable>
-      <div className="absolute z-50 flex flex-col justify-start px-5 py-6 rounded-lg bg-emerald-800 w-[400px] top-5 h-max drop-shadow-md">
+      <div className="absolute z-50 flex flex-col justify-start px-5 pb-6 pt-8 rounded-lg bg-emerald-800 w-[400px] top-[26rem] left-[26rem] h-max drop-shadow-md">
         <div className="flex flex-row items-center justify-between">
+          <button className="absolute top-0 left-1/2 translate-x-[-50%] text-emerald-200">
+            <DotsSix size={24} weight="fill" />
+          </button>
+
           <h1 className="text-lg font-semibold text-emerald-50">
             Electric Car Calculator
           </h1>
@@ -52,7 +56,7 @@ export default function EVCalculator({close}) {
         <div className="mt-4 mb-4 border-t border-emerald-600" />
         <div className="flex flex-row items-center justify-between">
           <h2 className="font-medium text-md text-emerald-50">
-            Distance driven
+            Distance driven yearly
           </h2>
           <p className="text-lg text-emerald-50">{distance} km</p>
         </div>
@@ -112,15 +116,15 @@ export default function EVCalculator({close}) {
 
         <div className="mt-4 mb-6 border-t border-emerald-600" />
         <div className="flex flex-row items-center justify-between">
-          <h2 className="font-medium text-md text-emerald-50">Savings</h2>
+          <h2 className="font-medium text-md text-emerald-50">Savings (yearly)</h2>
           <p className="text-lg text-emerald-50">
-            {Number.parseFloat(savings).toFixed(2)} kW
+            ${Number.parseFloat(savings).toFixed(2)}
           </p>
         </div>
         <div className="flex flex-row items-center justify-between">
-          <h2 className="font-medium text-md text-emerald-50">Carbon saved</h2>
+          <h2 className="font-medium text-md text-emerald-50">Carbon savings</h2>
           <p className="text-lg text-emerald-50">
-            ${Number.parseFloat(carbon).toFixed(2)} kg
+            {Number.parseFloat(carbon).toFixed(2)} kg
           </p>
         </div>
         <div className="flex flex-row items-center justify-between">
