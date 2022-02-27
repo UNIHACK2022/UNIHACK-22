@@ -8,6 +8,8 @@ import HomeCard from "../components/HomeCard";
 import Layers from "../components/Layers";
 import Legend from "../components/Legend";
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
+import SolarCalculator from "../components/SolarCalculator";
+import EVCalculator from "../components/EVCalculator";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
@@ -184,7 +186,8 @@ const Home: NextPage = () => {
         {dataVisible === false && <HomeCard />}
 
         <Legend mapLayer={mapLayer} />
-
+        <SolarCalculator />
+        <EVCalculator />
 
         <div ref={mapContainer} className="w-screen h-screen" />
 
