@@ -1,21 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import { useEffect } from "react";
-import styles from "../styles/Home.module.css";
-import useSWR from "swr"; // Handle data loading / error / successful states
-import fetcher from "../lib/fetcher";
-import { useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DataCard from "../components/DataCard";
 import HomeCard from "../components/HomeCard";
-import Stars from "../components/Stars";
 import Layers from "../components/Layers";
-import React from "react";
 import Legend from "../components/Legend";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
+
+// Doesn't work as local env variable
 mapboxgl.accessToken =
   "pk.eyJ1IjoidXNrb21wdWYiLCJhIjoiY2pnZzJvcHR4MDl0czJ4cW0zZTAxYnY5ZiJ9.EtWLN3Q74QDC6PpFDsvFig";
+
 
 const Home: NextPage = () => {
   // When postcode is searched via the box or by clicking, set value to postcode
@@ -56,6 +52,8 @@ const Home: NextPage = () => {
       pitch: 30,
       // bearing: -17.6,
       container: mapContainer.current,
+      // Access token
+      accessToken: process.env.ACCESS_TOKEN,
     });
 
     // Add geolocate control to the map.

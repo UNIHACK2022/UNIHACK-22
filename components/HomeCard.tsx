@@ -13,6 +13,9 @@ export default function HomeCard() {
           level.
         </p>
         <p className="">See how your suburb stacks up to others.</p>
+        <div className="h-full px-3 py-2 mt-4 rounded-md bg-emerald-100 w-max">
+          <p className="text-sm font-medium">💡&nbsp;Tip: Try clicking on map layers!</p> 
+        </div>
       </div>
 
       <div className="flex flex-col content-start px-6 py-6 bg-white rounded-lg w-96 h-max drop-shadow">
