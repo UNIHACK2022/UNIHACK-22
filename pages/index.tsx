@@ -186,8 +186,6 @@ const Home: NextPage = () => {
         {dataVisible === false && <HomeCard />}
 
         <Legend mapLayer={mapLayer} />
-        <SolarCalculator />
-        <EVCalculator />
 
         <div ref={mapContainer} className="w-screen h-screen" />
 

@@ -11,11 +11,36 @@ import {
   WarningOctagon,
   Info,
 } from "phosphor-react";
-import { MathOperations, BookOpen } from "phosphor-react";
+import { MathOperations, BookOpen, Lightning, CarSimple } from "phosphor-react";
+
 import Stars from "./Stars";
 import { Tooltip } from "@chakra-ui/react";
+import SolarCalculator from "./SolarCalculator";
+import EVCalculator from "./EVCalculator";
 
 export default function DataCard({ postcode }: { postcode: any }) {
+
+
+  const [solarVisible, setSolarVisible] = React.useState(false);
+  const [electricVisible, setElectricVisible] = React.useState(false);
+
+  const solarOpen = () => {
+    setSolarVisible(true)
+  }
+
+  const solarClose = () => {
+    setSolarVisible(false)
+  }
+
+  const electricOpen = () => {
+    setElectricVisible(true)
+  }
+
+  const electricClose = () => {
+    setElectricVisible(false)
+  }
+
+  
   // State averages for data
   const householdCarbonEmissionsAverages = {
     ACT: 0.99025,
@@ -275,6 +300,8 @@ export default function DataCard({ postcode }: { postcode: any }) {
 
   return (
     <div className="absolute flex flex-col z-30 left-[1.5rem] top-16 content-start gap-4">
+      {solarVisible === true && <SolarCalculator close={solarClose} />}
+      {electricVisible === true && <EVCalculator close={electricClose} />}
       <div className="flex flex-col z-30 w-72 h-max left-[1.5rem] top-16 bg-white drop-shadow rounded-md px-6 py-6 content-start">
         <h1 className="text-2xl font-semibold">{data.data[0].Postcode}</h1>
         <p className="text-sm font-medium">{data.data[0].LGA}</p>
@@ -393,13 +420,30 @@ export default function DataCard({ postcode }: { postcode: any }) {
           can reduce yours by making small changes. And if we do it together,
           it’ll compound into massive change.
         </p>
-        <div className="mb-6 border-t mt-9 border-neutral-300" />
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-row items-center gap-2">
+        <div className="mb-4 border-t mt-7 border-neutral-300" />
+        <div className="flex flex-col items-start">
+          <div className="flex flex-row items-center gap-2 pb-2 text-neutral-800">
             <MathOperations size={18} weight="fill" />
             <p className="text-base font-medium">Calculators</p>
           </div>
-          <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-col gap-1">
+            <button
+              className="flex flex-row items-center gap-2 text-sm"
+              onClick={solarOpen}
+            >
+              <Lightning size={14} weight="fill" className="text-yellow-500" />
+              <p className="transition-all hover:text-green-900">Solar Panel Savings</p>
+            </button>
+            <button
+              className="flex flex-row items-center gap-2 text-sm"
+              onClick={electricOpen}
+            >
+              <CarSimple size={14} weight="fill" className="text-red-500" />
+              <p className="transition-all hover:text-green-900">Electric Car Savings</p>
+            </button>
+          </div>
+
+          <div className="flex flex-row items-center gap-2 pt-3 pb-2">
             <BookOpen size={18} weight="fill" />
             <p className="text-base font-medium">Guides</p>
           </div>

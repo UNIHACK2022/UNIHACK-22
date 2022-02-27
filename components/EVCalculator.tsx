@@ -19,28 +19,41 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { Divider } from "@chakra-ui/react";
+import { X } from "phosphor-react";
 
-export default function EVCalculator() {
+export default function EVCalculator({close}) {
   const format = (val) => `$` + val;
   const parse = (val) => val.replace(/^\$/, "");
 
   const [distance, setDistance] = React.useState(15000);
-  const [petrol, setPetrol] = React.useState(2.00);
+  const [petrol, setPetrol] = React.useState(2.0);
   const [electricity, setElectricity] = React.useState(0.25);
 
-  const savings = distance * ((0.1 * petrol)-(0.15*electricity))
-  const carbon = distance * 0.015
-  const trees = carbon * 0.0117
+  const savings = distance * (0.1 * petrol - 0.15 * electricity);
+  const carbon = distance * 0.015;
+  const trees = carbon * 0.0117;
 
   return (
     <Draggable>
-      <div className="absolute z-50 flex flex-col justify-start px-5 py-6 rounded-md bg-emerald-800 w-max top-5 h-max drop-shadow-md">
-        <h1 className="text-lg font-semibold text-emerald-50">
-          Electric Car Calculator
-        </h1>
+      <div className="absolute z-50 flex flex-col justify-start px-5 py-6 rounded-lg bg-emerald-800 w-[400px] top-5 h-max drop-shadow-md">
+        <div className="flex flex-row items-center justify-between">
+          <h1 className="text-lg font-semibold text-emerald-50">
+            Electric Car Calculator
+          </h1>
+          <button>
+            <X
+              size={28}
+              weight="fill"
+              className="text-emerald-100"
+              onClick={close}
+            />
+          </button>
+        </div>
         <div className="mt-4 mb-4 border-t border-emerald-600" />
         <div className="flex flex-row items-center justify-between">
-          <h2 className="font-medium text-md text-emerald-50">Distance driven</h2>
+          <h2 className="font-medium text-md text-emerald-50">
+            Distance driven
+          </h2>
           <p className="text-lg text-emerald-50">{distance} km</p>
         </div>
 
@@ -63,8 +76,8 @@ export default function EVCalculator() {
             Petrol cost ($/L)
           </h2>
           <NumberInput
-            step={0.10}
-            defaultValue={2.00}
+            step={0.1}
+            defaultValue={2.0}
             onChange={(valueString) => setPetrol(parse(valueString))}
             value={format(petrol)}
             className="text-emerald-50"
@@ -100,15 +113,21 @@ export default function EVCalculator() {
         <div className="mt-4 mb-6 border-t border-emerald-600" />
         <div className="flex flex-row items-center justify-between">
           <h2 className="font-medium text-md text-emerald-50">Savings</h2>
-          <p className="text-lg text-emerald-50">{Number.parseFloat(savings).toFixed(2)} kW</p>
+          <p className="text-lg text-emerald-50">
+            {Number.parseFloat(savings).toFixed(2)} kW
+          </p>
         </div>
         <div className="flex flex-row items-center justify-between">
           <h2 className="font-medium text-md text-emerald-50">Carbon saved</h2>
-          <p className="text-lg text-emerald-50">${Number.parseFloat(carbon).toFixed(2)} kg</p>
+          <p className="text-lg text-emerald-50">
+            ${Number.parseFloat(carbon).toFixed(2)} kg
+          </p>
         </div>
         <div className="flex flex-row items-center justify-between">
           <h2 className="font-medium text-md text-emerald-50">Trees saved</h2>
-          <p className="text-lg text-emerald-50">{Number.parseFloat(trees).toFixed(2)}</p>
+          <p className="text-lg text-emerald-50">
+            {Number.parseFloat(trees).toFixed(2)}
+          </p>
         </div>
       </div>
     </Draggable>

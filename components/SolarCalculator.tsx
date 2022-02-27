@@ -19,8 +19,10 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { Divider } from "@chakra-ui/react";
+import { X } from "phosphor-react";
+import { useEffect, useState } from "react";
 
-export default function SolarCalculator() {
+export default function SolarCalculator({close}) {
   const format = (val) => `$` + val;
   const parse = (val) => val.replace(/^\$/, "");
 
@@ -28,17 +30,23 @@ export default function SolarCalculator() {
   const [bill, setBill] = React.useState(400);
 
   const generation = 4.4 * size;
-  const generationYearly = generation * 365.25
+  const generationYearly = generation * 365.25;
   const savings = bill - generation * 0.11;
   const carbon = generation * 0.2;
   const trees = carbon * 0.0117;
 
+
   return (
     <Draggable>
-      <div className="absolute z-50 flex flex-col justify-start px-5 py-6 rounded-md bg-emerald-800 w-max top-5 h-max drop-shadow-md">
-        <h1 className="text-lg font-semibold text-emerald-50">
-          Solar Panel Calculator
-        </h1>
+      <div className="absolute z-50 flex flex-col justify-start px-5 py-6 rounded-lg bg-emerald-800 w-[400px] top-5 h-max drop-shadow-md">
+        <div className="flex flex-row items-center justify-between">
+          <h1 className="text-lg font-semibold text-emerald-50">
+            Solar Panel Calculator
+          </h1>
+          <button>
+            <X size={28} weight="fill" className="text-emerald-100" onClick={close}/>
+          </button>
+        </div>
         <div className="mt-4 mb-4 border-t border-emerald-600" />
         <div className="flex flex-row items-center justify-between">
           <h2 className="font-medium text-md text-emerald-50">Size</h2>
@@ -81,20 +89,32 @@ export default function SolarCalculator() {
 
         <div className="mt-4 mb-6 border-t border-emerald-600" />
         <div className="flex flex-row items-center justify-between">
-          <h2 className="font-medium text-md text-emerald-50">Generation (yearly)</h2>
-          <p className="text-lg text-emerald-50">{Number.parseFloat(generationYearly).toFixed(2)} kW</p>
+          <h2 className="font-medium text-md text-emerald-50">
+            Generation (yearly)
+          </h2>
+          <p className="text-lg text-emerald-50">
+            {Number.parseFloat(generationYearly).toFixed(2)} kW
+          </p>
         </div>
         <div className="flex flex-row items-center justify-between">
           <h2 className="font-medium text-md text-emerald-50">Savings</h2>
-          <p className="text-lg text-emerald-50">${Number.parseFloat(savings).toFixed(2)}</p>
+          <p className="text-lg text-emerald-50">
+            ${Number.parseFloat(savings).toFixed(2)}
+          </p>
         </div>
         <div className="flex flex-row items-center justify-between">
-          <h2 className="font-medium text-md text-emerald-50">Carbon savings</h2>
-          <p className="text-lg text-emerald-50">{Number.parseFloat(carbon).toFixed(2)} kg</p>
+          <h2 className="font-medium text-md text-emerald-50">
+            Carbon savings
+          </h2>
+          <p className="text-lg text-emerald-50">
+            {Number.parseFloat(carbon).toFixed(2)} kg
+          </p>
         </div>
         <div className="flex flex-row items-center justify-between">
           <h2 className="font-medium text-md text-emerald-50">Trees saved</h2>
-          <p className="text-lg text-emerald-50">{Number.parseFloat(trees).toFixed(2)}</p>
+          <p className="text-lg text-emerald-50">
+            {Number.parseFloat(trees).toFixed(2)}
+          </p>
         </div>
       </div>
     </Draggable>
