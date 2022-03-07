@@ -170,6 +170,7 @@ const Home: NextPage = () => {
         <title>Greenways</title>
         <meta name="description" content="Fight climate change one suburb at a time." />
         <link rel="icon" href="/favicon.ico" />
+        <meta name="og:image" content="/greenways_og.png" />
       </Head>
 
       <main className="relative overflow-hidden">
