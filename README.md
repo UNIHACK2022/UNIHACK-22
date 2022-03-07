@@ -10,7 +10,12 @@ You can view all the details and features of GreenWays on the official Devpost [
 
 ## Development
 
-First, run the development server:
+First, install all dependencies:
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
